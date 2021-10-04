@@ -14,15 +14,16 @@
     <h1>Minesweeper</h1>
     <div class="levels">
         <h3 class='chooseLevel'>Choose your difficulty level:</h3>
-        <button class="level level-4-4" onclick="setGameLevel(4,2)">Beginner(4*4) </button>
-        <button class="level level-8-8" onclick="setGameLevel(8,12)">Medium (8*8)</button>
-        <button class="level level-12-12" onclick="setGameLevel(12,30)">Expert (12*12) </button>
+        <button class="level level1 " onclick="setGameLevel(this, 4,2)">Beginner(4*4) </button>
+        <button class="level level2" onclick="setGameLevel(this, 8,12)">Medium (8*8)</button>
+        <button class="level level3" onclick="setGameLevel(this, 12,30)">Expert (12*12) </button>
     </div>
     <div class="stopwatch">Game time: <span>00:00</span></div>
     <button class = "restart" onclick="restartGame()">😊</button>
     
     <table border="1" cellpadding="10">
         <tbody class="gameBoard"> </tbody>
+        
 
 
         <script src="js/utils.js"></script>

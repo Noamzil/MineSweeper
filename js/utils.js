@@ -10,7 +10,7 @@ const FLAG = '🚩'
 var gElTimer = document.querySelector('.stopwatch span');
 var gMin = 0;
 var gSec = 0;
-var gStoptime = false;
+var gStoptime = true;
 
 
 function createBoard(num) {
@@ -70,6 +70,7 @@ function makeMines(num) {
         var randCol = getRandomInt(0, gBoard[0].length)
         if (!gBoard[randRow][randCol].cellValue) {
             gBoard[randRow][randCol].cellValue = MINE
+            gBoard[randRow][randCol].isMine = true
             cnt++
         }
     }
@@ -140,6 +141,8 @@ function stopTimer() {
 
 function resetTimer() {
     gElTimer.innerHTML = '00:00';
+    gMin = 0;
+    gSec = 0;
 }
 
 
