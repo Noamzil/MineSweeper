@@ -21,6 +21,11 @@ body {
 button:hover {
     background-color: lightsalmon;
 }
+.lives {
+    display: inline-block;
+    margin-right: 20px;
+}
+
 
 .restart {
     border: none;
@@ -58,5 +63,7 @@ table {
 }
 
 .stopwatch {
-    font-size: 25px;
+    font-size: 20px;
+    display: inline-block;
+    margin-left: 20px;
 }

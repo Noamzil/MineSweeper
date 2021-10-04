@@ -1,14 +1,15 @@
 'use strict'
 
 var gLevel = {
-    size: 4,
-    mines: 2
+    size: 8,
+    mines: 12
 }
 
 var gGame = {
     isOn: false,
     shownCount: 0,
     markedCount: 0,
+    lives:3
 }
 
 
@@ -18,7 +19,7 @@ function init() {
     renderBoard()
     makeMines(gLevel.mines)
     setNums(gBoard)
-    var level = document.querySelector('.level1')
+    var level = document.querySelector('.level2')
     level.classList.add('buttonClicked')
     var showTable = printCellsValues()
     console.table(showTable)
@@ -44,8 +45,11 @@ function setGameLevel(level, size, mines) {
 
 function restartGame() {
     var elRestart = document.querySelector('.restart')
+    var elLives = document.querySelector('.lives')
     elRestart.innerText =  '😊'
     gGame.isOn = true
+    gGame.lives = 3
+    elLives.innerHTML = HEART.repeat(gGame.lives)
     stopTimer()
     resetTimer()
     gGame.markedCount = 0

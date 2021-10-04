@@ -1,8 +1,8 @@
 'use strict'
 var gWin
+const HEART = '💗'
 
 function cellClicked(cell) {
-
     if (!gGame.isOn) return
     if (!gGame.shownCount && !gGame.markedCount && gStoptime) startTimer()
     gGame.shownCount++
@@ -33,10 +33,18 @@ function clickedNum(cell, i, j) {
 
 
 function clickedMine(cell) {
-    stopTimer()
-    cell.innerText = MINE
-    cell.style.backgroundColor = 'red'
-    gameOver()
+    if (gGame.lives !== 1) {
+        cell.innerText = MINE
+    } else {  //0 lives
+        stopTimer()
+        cell.innerText = MINE
+        cell.style.backgroundColor = 'red'
+        gameOver()
+    }
+    gGame.lives--
+    var elLives = document.querySelector('.lives')
+    elLives.innerHTML = HEART.repeat(gGame.lives)
+
 
 }
 
