@@ -13,23 +13,25 @@
 <body onload="init()">
     <h1>Minesweeper</h1>
     <div class="levels">
-        <h3 class='chooseLevel'>Choose your difficulty level:</h3>
-        <button class="level level1 " onclick="setGameLevel(this, 4,2)">Beginner(4*4) </button>
-        <button class="level level2" onclick="setGameLevel(this, 8,12)">Medium (8*8)</button>
-        <button class="level level3" onclick="setGameLevel(this, 12,30)">Expert (12*12) </button>
+        <h3 class='choose-level'>Choose your difficulty level:</h3>
+        <button class="level level1 " onclick="setGameLevel(this, 4,2)">Beginner(4X4) </button>
+        <button class="level level2 buttonClicked" onclick="setGameLevel(this, 8,12)">Medium (8X8)</button>
+        <button class="level level3" onclick="setGameLevel(this, 12,30)">Expert (12X12) </button>
     </div>
-    <h2 class = "lives">💗💗💗</h2>
-    <button class = "restart" onclick="restartGame()">😊</button>
+    <h2 class="lives">💗💗💗</h2>
+    <button class="restart" onclick="restartGame()">😊</button>
+    <div class = "hints">💡💡💡</div>
+    <button class="hint" onclick="hint()">HINT</button>
     <div class="stopwatch">Game time: <span>00:00</span></div>
 
     <table border="1" cellpadding="10">
-        <tbody class="gameBoard"> </tbody>
+        <tbody class="game-board"> </tbody>
+    </table>
+    <div class="footer">Noam Zilberman</div>
 
-
-
-        <script src="js/utils.js"></script>
-        <script src="js/set game.js"></script>
-        <script src="js/play game.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/set game.js"></script>
+    <script src="js/play game.js"></script>
 </body>
 
 </html>

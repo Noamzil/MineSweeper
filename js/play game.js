@@ -1,26 +1,31 @@
 'use strict'
 var gWin
+var gHints = 3
 const HEART = '💗'
+const HINT = '💡'
 
 function cellClicked(cell) {
     if (!gGame.isOn) return
-    if (!gGame.shownCount && !gGame.markedCount && gStoptime) startTimer()
-    gGame.shownCount++
     var i = cell.dataset.i
     var j = cell.dataset.j
-    if (gBoard[i][j].isMarked) return
-    cell.classList.add('cellClicked')
+    if (gFirstClick) {
+        // firstClick(cell,i,j)
+        startTimer()
+    }
+    gFirstClick = false
+
+    if (gBoard[i][j].isMarked || gBoard[i][j].isShown) return
     gBoard[i][j].isShown = true
-    if (gBoard[i][j].cellValue === MINE && gGame.shownCount === 1) {
-        //first click - the cell is mine
-    } else if (gBoard[i][j].cellValue === MINE) {
-        //clicked a mine
+    gGame.shownCount++
+    cell.classList.add('cellClicked')
+    if (gBoard[i][j].cellValue === MINE && gGame.shownCount === 1) {  //first click - the cell is mine
+        // firstClick(cell) //not working yet
+        console.log('im a mine first click');
+    } else if (gBoard[i][j].cellValue === MINE) { //clicked a mine    
         clickedMine(cell)
-    } else if (gBoard[i][j].cellValue === 0) {
-        //clicked 0
+    } else if (gBoard[i][j].cellValue === 0) { //clicked 0
         clickedZero(cell)
-    } else if (gBoard[i][j].cellValue !== MINE) {
-        // clicked a number (not 0)
+    } else if (gBoard[i][j].cellValue !== MINE) {  // clicked a number (not 0)
         clickedNum(cell, i, j)
     }
     var boardSize = gLevel.size ** 2
@@ -74,13 +79,21 @@ function clickedZero(cell) {
         for (var j = cellJ - 1; j <= cellJ + 1; j++) {
             if (j < 0 || j >= gBoard[0].length) continue
             if (i === cellI && j === cellJ) continue
+            if (!gBoard[i][j].isShown) gGame.shownCount++
             gBoard[i][j].isShown = true
-            gGame.shownCount++
             var elCell = document.querySelector(`.cell${i}-${j}`)
             if (gBoard[i][j].cellValue !== 0) elCell.innerText = gBoard[i][j].cellValue
             elCell.classList.add('cellClicked')
         }
     }
+}
+
+function firstClick(cell) {
+    console.log('im here');
+    setMines(gLevel.mines)
+    setNums(gBoard)
+    // var level = document.querySelector('.level2')
+    // level.classList.add('buttonClicked')
 }
 
 
@@ -115,4 +128,21 @@ function gameWon() {
     gGame.isOn = false
     var elRestart = document.querySelector('.restart')
     elRestart.innerText = '😎'
+}
+
+function hint() { //supposed to be safe click
+    var cnt = 0
+    while (cnt < 1) {
+        var i = getRandomInt(0, gBoard.length)
+        var j = getRandomInt(0, gBoard[0].length)
+        if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
+            var elCell = document.querySelector(`.cell${i}-${j}`)
+            elCell.style.backgroundColor = ' rgb(255 214 121)'
+            setTimeout(function () {
+                elCell.style.backgroundColor = ' lightgrey';
+            }, 2000);
+            cnt++
+            gHints--
+        }
+    }
 }

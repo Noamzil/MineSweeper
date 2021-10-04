@@ -1,21 +1,23 @@
 'use strict'
-var gElBoard = document.querySelector('.gameBoard')
+var gElBoard = document.querySelector('.game-board')
 gElBoard.addEventListener("contextmenu", e => e.preventDefault());
 
 var gBoard
 var gMines
-const MINE = '🐱‍👤'
+const MINE = '💣'
 const FLAG = '🚩'
 
 var gElTimer = document.querySelector('.stopwatch span');
-var gMin = 0;
-var gSec = 0;
+var gTime = {
+    min: 0,
+    sec: 0
+}
 var gStoptime = true;
 
 
 function createBoard(num) {
     var board = [];
-    for (var i = 0; i <num; i++) {
+    for (var i = 0; i < num; i++) {
         board[i] = []
         for (var j = 0; j < num; j++) {
             board[i][j] = createCell()
@@ -39,7 +41,7 @@ function createCell() {
 
 function renderBoard() {
     var strHTML = ''
-    var elBoard = document.querySelector('.gameBoard')
+    var elBoard = document.querySelector('.game-board')
     for (var i = 0; i < gBoard.length; i++) {
         strHTML += '<tr>'
         for (var j = 0; j < gBoard[0].length; j++) {
@@ -50,19 +52,19 @@ function renderBoard() {
     elBoard.innerHTML = strHTML
 }
 
-function printCellsValues() {
+function getCellsValues() {
     var newBoard = []
-    for (var i=0; i<gBoard.length; i++) {
+    for (var i = 0; i < gBoard.length; i++) {
         newBoard[i] = []
-        for (var j=0; j<gBoard.length; j++) {
+        for (var j = 0; j < gBoard.length; j++) {
             newBoard[i][j] = gBoard[i][j].cellValue
         }
-    } 
+    }
     return newBoard
-} 
+}
 
 
-function makeMines(num) {
+function setMines(num) {
     gMines = num
     var cnt = 0
     while (cnt < num) {
@@ -113,36 +115,36 @@ function getRandomInt(min, max) {
 
 function timerCycle() {
     if (!gStoptime) {
-        gSec = parseInt(gSec);
-        gMin = parseInt(gMin);
-        gSec++
-        if (gSec == 60) {
-            gMin++
-            gSec = 0;
+        gTime.sec = parseInt(gTime.sec);
+        gTime.min = parseInt(gTime.min);
+        gTime.sec++
+        if (gTime.sec == 60) {
+            gTime.min++
+            gTime.sec = 0;
         }
-        if (gSec < 10 || gSec == 0) gSec = '0' + gSec
-        if (gMin < 10 || gMin == 0) gMin = '0' + gMin
-        gElTimer.innerHTML = gMin + ':' + gSec;
+        if (gTime.sec < 10 || gTime.sec == 0) gTime.sec = '0' + gTime.sec
+        if (gTime.min < 10 || gTime.min == 0) gTime.min = '0' + gTime.min
+        gElTimer.innerHTML = gTime.min + ':' + gTime.sec;
         setTimeout("timerCycle()", 1000);
     }
 }
 
 
 function startTimer() {
-  if (gStoptime) {
+    if (gStoptime) {
         gStoptime = false;
         timerCycle();
     }
 }
 
 function stopTimer() {
-  if (!gStoptime) gStoptime = true;
+    if (!gStoptime) gStoptime = true;
 }
 
 function resetTimer() {
     gElTimer.innerHTML = '00:00';
-    gMin = 0;
-    gSec = 0;
+    gTime.min = 0;
+    gTime.sec = 0;
 }
 
 

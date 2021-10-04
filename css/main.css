@@ -21,11 +21,11 @@ body {
 button:hover {
     background-color: lightsalmon;
 }
+
 .lives {
     display: inline-block;
     margin-right: 20px;
 }
-
 
 .restart {
     border: none;
@@ -41,15 +41,36 @@ button:hover {
     background-color: rgb(197, 195, 195)
 }
 
+.hints {
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 25px;
+}
+
+.hint {
+    border: none;
+    border-radius: 7px;
+    padding: 8px;
+    background-color: rgb(255 214 121);
+    cursor: pointer;
+}
+
+.hint:hover {
+    background-color: rgb(255 196 62);
+}
+.hintClicked {
+    background-color: rgb(255 214 121);
+}
+
 table {
     margin: auto;
 }
 
 .cell {
     background-color: lightgrey;
-    height: 25px;
-    width: 25px;
-    font-weight: bold;
+    height: 30px;
+    width: 30px;
+    font-weight: bolder;
     font-size: 20px;
     box-shadow: 10px 5px 4px 4px #A3A3A3;
 }
@@ -64,6 +85,48 @@ table {
 
 .stopwatch {
     font-size: 20px;
-    display: inline-block;
-    margin-left: 20px;
+    display: block;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: lightsalmon;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.neighbors-1 {
+    color: blue;
+}
+
+.neighbors-2 {
+    color: green;
+}
+
+.neighbors-3 {
+    color: red;
+}
+
+.neighbors-4 {
+    color: darkblue;
+}
+
+.neighbors-5 {
+    color: darkblue;
+}
+
+.neighbors-6 {
+    color: darkblue;
+}
+
+.neighbors-7 {
+    color: darkblue;
+}
+
+.neighbors-8 {
+    color: darkblue;
 }
