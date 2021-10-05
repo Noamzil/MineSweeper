@@ -68,7 +68,7 @@ var gChecked = []
 function clickedZero(cell) { //recursive 
     if (gChecked.includes(cell)) return
     gChecked.push(cell)
-    cell.innerText = ''
+    // cell.innerText = ''
     var cellI = +cell.dataset.i
     var cellJ = +cell.dataset.j
     if (gBoard[cellI][cellJ].cellValue) return //ending term
@@ -80,8 +80,8 @@ function clickedZero(cell) { //recursive
             if (!gBoard[i][j].isShown) gGame.shownCount++
             gBoard[i][j].isShown = true
             var elCell = document.querySelector(`.cell${i}-${j}`)
-            if (gBoard[i][j].cellValue !== 0) elCell.innerText = gBoard[i][j].cellValue
-            elCell.classList.add('cellClicked')
+            if (gBoard[i][j].cellValue !== 0 && !gBoard[i][j].isMarked) elCell.innerText = gBoard[i][j].cellValue
+            if (!gBoard[i][j].isMarked) elCell.classList.add('cellClicked')
         }
     }
     var elRightCell = document.querySelector(`.cell${cellI}-${cellJ + 1}`)
@@ -92,17 +92,16 @@ function clickedZero(cell) { //recursive
     if (cellI - 1 > 0) {
         clickedZero(elUpCell)
     }
-    if (cellJ-1>0){
+    if (cellJ - 1 > 0) {
         clickedZero(elLeftCell)
-    } 
+    }
     if (cellJ + 1 < gBoard[0].length) {
         clickedZero(elRightCell)
     }
-    if(cellI+1<gBoard.length) {
+    if (cellI + 1 < gBoard.length) {
         clickedZero(elDownCell)
     }
 }
-
 
 
 
@@ -159,19 +158,30 @@ function rightClick(cell, ev) {
 
 }
 
+gWin = true
 function checkWin() {
     stopTimer()
     var mines = gLevel.mines
     if (gGame.markedCount !== mines) gWin = false
-    gWin = true
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            var elCell = document.querySelector(`.cell${i}-${j}`)
+            if (gBoard[i][j].cellValue===MINE) {
+                if (!gBoard[i][j].isMarked) gWin = false
+            }
+        }
+    } 
+    if (gGame.lives>0) gWin = true
     if (!gWin) gameOver()
     if (gWin) gameWon()
 }
 
+
+
 function gameWon() {
     bestScore()
     var elBestScore = document.querySelector('.score')
-    elBestScore.style.display = 'block'
+    if (gLevel.level!=='custom') elBestScore.style.display = 'block'
     gGame.isOn = false
     var elRestart = document.querySelector('.restart')
     elRestart.innerText = '😎'

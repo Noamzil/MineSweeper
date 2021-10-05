@@ -23,6 +23,7 @@ h1 {
     border-radius: 7px;
     cursor: pointer;
     font-weight: bolder;
+    font-size: medium;
 }
 
 .buttonClicked {
@@ -192,4 +193,13 @@ table {
 
 .score-levels {
     margin-top: 10px;
+}
+
+.clicked-safe {
+background-color: rgb(110, 173, 255);
+}
+
+.on-hint {
+    background-color: rgba(255, 230, 170, 0.863);
+    
 }

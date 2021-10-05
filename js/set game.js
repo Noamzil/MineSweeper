@@ -48,6 +48,17 @@ function setGameLevel(elBtn, level, size, mines) {
     console.table(showTable)
 }
 
+
+function customLevel(elBtn) {
+    var size = +prompt('Board size?')
+    var mines = +prompt('How many mines?')
+    if (mines > size ** 2) {
+        alert('Too many mines! ')
+        return
+    }
+    setGameLevel(elBtn, 'custom', size, mines)
+}
+
 function restartGame() {
     gGame.markedCount = 0
     gGame.shownCount = 0
@@ -61,10 +72,12 @@ function restartGame() {
     var elRestart = document.querySelector('.restart')
     var elLives = document.querySelector('.lives')
     var elHints = document.querySelector('.hints')
+    var elHint = document.querySelector('.hint')
     var elSafeClick = document.querySelector('.safeClick-num')
     elRestart.innerText = '😊'
     elLives.innerHTML = HEART.repeat(gGame.lives)
     elHints.innerHTML = HINT.repeat(gGame.hints)
+    elHint.style.display = 'inline-block'
     elSafeClick.innerHTML = '(' + gGame.safeClick + ')'
     stopTimer()
     resetTimer()
@@ -86,12 +99,11 @@ function safeClick() {   //problem with design after clicking
         var j = getRandomInt(0, gBoard[0].length)
         if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
             var elCell = document.querySelector(`.cell${i}-${j}`)
-            elCell.style.backgroundColor = ' rgb(110, 173, 255)'
+            elCell.classList.add('clicked-safe')
             setTimeout(function () {
-                elCell.style.backgroundColor = ' lightgrey';
+                elCell.classList.remove('clicked-safe')
             }, 2000);
             cnt++
-            var elSafeClick = document.querySelector('.safe-click')
             var elSafeClickNum = document.querySelector('.safeClick-num')
             gGame.safeClick--
             elSafeClickNum.innerHTML = '(' + gGame.safeClick + ')'
@@ -128,6 +140,7 @@ function hint() {
                     for (var i = 0; i < hintCells.length; i++) {
                         var elCurrCell = hintCells[i]
                         elCurrCell.innerText = '';
+                        elCurrCell.classList.remove('on-hint')
                     }
                 }, 1000);
             }
@@ -135,7 +148,6 @@ function hint() {
             gGame.hints--
             var elHints = document.querySelector('.hints')
             var elHint = document.querySelector('.hint')
-            console.log(elHints);
             elHints.innerHTML = HINT.repeat(gGame.hints)
             if (!gGame.hints) elHint.style.display = 'none'
         }
@@ -144,7 +156,7 @@ function hint() {
 
 
 
-function bestScore() { 
+function bestScore() {
     var gameTime = gElTimer.innerText
     if (gLevel.level === 1) {
         if (!localStorage.bestScore1) localStorage.bestScore1 = gameTime
