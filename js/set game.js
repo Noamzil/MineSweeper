@@ -1,7 +1,7 @@
 'use strict'
 
 var gLevel = {
-    level:2,
+    level: 2,
     size: 8,
     mines: 12
 }
@@ -12,7 +12,7 @@ var gGame = {
     markedCount: 0,
     lives: 3,
     hints: 3,
-    safeClick:3
+    safeClick: 3
 }
 
 var gFirstClick = true
@@ -24,14 +24,17 @@ function init() {
     renderBoard()
     setMines(gLevel.mines)
     setNums(gBoard)
+    var elMinesRem = document.querySelector('.rem-mines')
+    elMinesRem.innerHTML = gLevel.mines
     var showTable = getCellsValues()
     console.table(showTable)
 }
 
-function setGameLevel(elBtn,level, size, mines) {
+function setGameLevel(elBtn, level, size, mines) {
     restartGame()
-    gLevel = { level:level ,size: size, mines: mines }
-    console.log(gLevel);
+    gLevel = { level: level, size: size, mines: mines }
+    var elMinesRem = document.querySelector('.rem-mines')
+    elMinesRem.innerHTML = gLevel.mines
     var elLevels = document.querySelectorAll('.level')
     for (var i = 0; i < elLevels.length; i++) {
         if (elLevels[i].classList.contains('buttonClicked')) elLevels[i].classList.remove('buttonClicked')
@@ -48,18 +51,20 @@ function setGameLevel(elBtn,level, size, mines) {
 function restartGame() {
     gGame.markedCount = 0
     gGame.shownCount = 0
-    gGame.hints =3
-    gGame.safeClick= 3
+    gGame.hints = 3
+    gGame.safeClick = 3
     gGame.isOn = true
     gGame.lives = 3
     gFirstClick = true
+    var elMinesRem = document.querySelector('.rem-mines')
+    elMinesRem.innerHTML = gLevel.mines
     var elRestart = document.querySelector('.restart')
     var elLives = document.querySelector('.lives')
     var elHints = document.querySelector('.hints')
     var elSafeClick = document.querySelector('.safeClick-num')
     elRestart.innerText = '😊'
     elLives.innerHTML = HEART.repeat(gGame.lives)
-    elHints.innerHTML  = HINT.repeat(gGame.hints)
+    elHints.innerHTML = HINT.repeat(gGame.hints)
     elSafeClick.innerHTML = '(' + gGame.safeClick + ')'
     stopTimer()
     resetTimer()
@@ -67,6 +72,8 @@ function restartGame() {
     renderBoard()
     setMines(gLevel.mines)
     setNums(gBoard)
+    var elBestScore = document.querySelector('.score')
+    elBestScore.style.display = 'none'
 
 }
 
@@ -84,7 +91,7 @@ function safeClick() {   //problem with design after clicking
                 elCell.style.backgroundColor = ' lightgrey';
             }, 2000);
             cnt++
-            var elSafeClick =document.querySelector('.safe-click')
+            var elSafeClick = document.querySelector('.safe-click')
             var elSafeClickNum = document.querySelector('.safeClick-num')
             gGame.safeClick--
             elSafeClickNum.innerHTML = '(' + gGame.safeClick + ')'
@@ -93,7 +100,7 @@ function safeClick() {   //problem with design after clicking
 }
 
 function hint() {
-    if (!gGame.isOn) return 
+    if (!gGame.isOn) return
     var cnt = 0
     var hintCells = []
     while (cnt < 1) {
@@ -122,14 +129,14 @@ function hint() {
                         var elCurrCell = hintCells[i]
                         elCurrCell.innerText = '';
                     }
-                }, 2500);
+                }, 1000);
             }
             cnt++
             gGame.hints--
             var elHints = document.querySelector('.hints')
             var elHint = document.querySelector('.hint')
             console.log(elHints);
-            elHints.innerHTML = HINT.repeat( gGame.hints)
+            elHints.innerHTML = HINT.repeat(gGame.hints)
             if (!gGame.hints) elHint.style.display = 'none'
         }
     }
@@ -137,26 +144,24 @@ function hint() {
 
 
 
-function bestScore() {
+function bestScore() { 
     var gameTime = gElTimer.innerText
-    if (gLevel.level===1) {
+    if (gLevel.level === 1) {
         if (!localStorage.bestScore1) localStorage.bestScore1 = gameTime
         if (gameTime < localStorage.bestScore1) localStorage.bestScore1 = gameTime
         var elBestScore1 = document.querySelector('.beginner')
         elBestScore1.innerText = localStorage.bestScore1
     }
-    else if (gLevel.level===2) {
+    else if (gLevel.level === 2) {
         if (!localStorage.bestScore2) localStorage.bestScore2 = gameTime
         if (gameTime < localStorage.bestScoe2) localStorage.bestScore2 = gameTime
         var elBestScore2 = document.querySelector('.medium')
         elBestScore2.innerText = localStorage.bestScore2
     }
-    else if (gLevel.level===3) {
+    else if (gLevel.level === 3) {
         if (!localStorage.bestScore3) localStorage.bestScore3 = gameTime
         if (gameTime < localStorage.bestScore3) localStorage.bestScore3 = gameTime
         var elBestScore3 = document.querySelector('.expert')
         elBestScore3.innerText = localStorage.bestScore3
     }
-
 }
-
