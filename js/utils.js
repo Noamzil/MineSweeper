@@ -52,6 +52,13 @@ function renderBoard() {
     elBoard.innerHTML = strHTML
 }
 
+
+function renderCell(location, value) {
+	var cellSelector = '.' + getClassName(location)
+	var elCell = document.querySelector(cellSelector);
+	elCell.innerHTML = value;
+}
+
 function getCellsValues() {
     var newBoard = []
     for (var i = 0; i < gBoard.length; i++) {

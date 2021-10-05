@@ -1,6 +1,7 @@
 'use strict'
 
 var gLevel = {
+    level:2,
     size: 8,
     mines: 12
 }
@@ -9,12 +10,15 @@ var gGame = {
     isOn: false,
     shownCount: 0,
     markedCount: 0,
-    lives: 3
+    lives: 3,
+    hints: 3,
+    safeClick:3
 }
 
 var gFirstClick = true
 
 function init() {
+    localStorage.clear()
     gGame.isOn = true
     gBoard = createBoard(gLevel.size)
     renderBoard()
@@ -24,9 +28,10 @@ function init() {
     console.table(showTable)
 }
 
-function setGameLevel(level, size, mines) {
+function setGameLevel(elBtn,level, size, mines) {
     restartGame()
-    gLevel = { size: size, mines: mines }
+    gLevel = { level:level ,size: size, mines: mines }
+    console.log(gLevel);
     var elLevels = document.querySelectorAll('.level')
     for (var i = 0; i < elLevels.length; i++) {
         if (elLevels[i].classList.contains('buttonClicked')) elLevels[i].classList.remove('buttonClicked')
@@ -35,22 +40,29 @@ function setGameLevel(level, size, mines) {
     renderBoard()
     setMines(gLevel.mines)
     setNums(gBoard)
-    level.classList.add('buttonClicked')
+    elBtn.classList.add('buttonClicked')
     var showTable = getCellsValues()
     console.table(showTable)
 }
 
 function restartGame() {
-    var elRestart = document.querySelector('.restart')
-    var elLives = document.querySelector('.lives')
-    elRestart.innerText = '😊'
-    gGame.isOn = true
-    gGame.lives = 3
-    elLives.innerHTML = HEART.repeat(gGame.lives)
-    stopTimer()
-    resetTimer()
     gGame.markedCount = 0
     gGame.shownCount = 0
+    gGame.hints =3
+    gGame.safeClick= 3
+    gGame.isOn = true
+    gGame.lives = 3
+    gFirstClick = true
+    var elRestart = document.querySelector('.restart')
+    var elLives = document.querySelector('.lives')
+    var elHints = document.querySelector('.hints')
+    var elSafeClick = document.querySelector('.safeClick-num')
+    elRestart.innerText = '😊'
+    elLives.innerHTML = HEART.repeat(gGame.lives)
+    elHints.innerHTML  = HINT.repeat(gGame.hints)
+    elSafeClick.innerHTML = '(' + gGame.safeClick + ')'
+    stopTimer()
+    resetTimer()
     gBoard = createBoard(gLevel.size)
     renderBoard()
     setMines(gLevel.mines)
@@ -58,4 +70,93 @@ function restartGame() {
 
 }
 
+
+function safeClick() {   //problem with design after clicking
+    if (!gGame.isOn) return
+    var cnt = 0
+    while (cnt < 1 && gGame.safeClick) {
+        var i = getRandomInt(0, gBoard.length)
+        var j = getRandomInt(0, gBoard[0].length)
+        if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
+            var elCell = document.querySelector(`.cell${i}-${j}`)
+            elCell.style.backgroundColor = ' rgb(110, 173, 255)'
+            setTimeout(function () {
+                elCell.style.backgroundColor = ' lightgrey';
+            }, 2000);
+            cnt++
+            var elSafeClick =document.querySelector('.safe-click')
+            var elSafeClickNum = document.querySelector('.safeClick-num')
+            gGame.safeClick--
+            elSafeClickNum.innerHTML = '(' + gGame.safeClick + ')'
+        }
+    }
+}
+
+function hint() {
+    if (!gGame.isOn) return 
+    var cnt = 0
+    var hintCells = []
+    while (cnt < 1) {
+        var cellI = getRandomInt(0, gBoard.length)
+        var cellJ = getRandomInt(0, gBoard[0].length)
+        var elCell = document.querySelector(`.cell${cellI}-${cellJ}`)
+        if (!gBoard[cellI][cellJ].isMine && !gBoard[cellI][cellJ].isShown) {
+            hintCells.push(elCell)
+            for (var i = cellI - 1; i <= cellI + 1; i++) {
+                if (i < 0 || i >= gBoard.length) continue;
+                for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+                    if (j < 0 || j >= gBoard[i].length) continue;
+                    if (i === cellI && j === cellJ) continue;
+                    hintCells.push(document.querySelector(`.cell${i}-${j}`))
+                }
+            }
+            for (var i = 0; i < hintCells.length; i++) {
+                var elCurrCell = hintCells[i]
+                var currRow = elCurrCell.dataset.i
+                var currCol = elCurrCell.dataset.j
+                elCurrCell.classList.add('on-hint')
+                elCurrCell.innerText = gBoard[currRow][currCol].cellValue
+                if (gBoard[currRow][currCol].cellValue === 0) elCurrCell.innerText = ''
+                setTimeout(function () {
+                    for (var i = 0; i < hintCells.length; i++) {
+                        var elCurrCell = hintCells[i]
+                        elCurrCell.innerText = '';
+                    }
+                }, 2500);
+            }
+            cnt++
+            gGame.hints--
+            var elHints = document.querySelector('.hints')
+            var elHint = document.querySelector('.hint')
+            console.log(elHints);
+            elHints.innerHTML = HINT.repeat( gGame.hints)
+            if (!gGame.hints) elHint.style.display = 'none'
+        }
+    }
+}
+
+
+
+function bestScore() {
+    var gameTime = gElTimer.innerText
+    if (gLevel.level===1) {
+        if (!localStorage.bestScore1) localStorage.bestScore1 = gameTime
+        if (gameTime < localStorage.bestScore1) localStorage.bestScore1 = gameTime
+        var elBestScore1 = document.querySelector('.beginner')
+        elBestScore1.innerText = localStorage.bestScore1
+    }
+    else if (gLevel.level===2) {
+        if (!localStorage.bestScore2) localStorage.bestScore2 = gameTime
+        if (gameTime < localStorage.bestScoe2) localStorage.bestScore2 = gameTime
+        var elBestScore2 = document.querySelector('.medium')
+        elBestScore2.innerText = localStorage.bestScore2
+    }
+    else if (gLevel.level===3) {
+        if (!localStorage.bestScore3) localStorage.bestScore3 = gameTime
+        if (gameTime < localStorage.bestScore3) localStorage.bestScore3 = gameTime
+        var elBestScore3 = document.querySelector('.expert')
+        elBestScore3.innerText = localStorage.bestScore3
+    }
+
+}
 

@@ -1,6 +1,5 @@
 'use strict'
 var gWin
-var gHints = 3
 const HEART = '💗'
 const HINT = '💡'
 
@@ -9,18 +8,15 @@ function cellClicked(cell) {
     var i = cell.dataset.i
     var j = cell.dataset.j
     if (gFirstClick) {
-        // firstClick(cell,i,j)
         startTimer()
     }
-    gFirstClick = false
-
+    
     if (gBoard[i][j].isMarked || gBoard[i][j].isShown) return
     gBoard[i][j].isShown = true
     gGame.shownCount++
     cell.classList.add('cellClicked')
-    if (gBoard[i][j].cellValue === MINE && gGame.shownCount === 1) {  //first click - the cell is mine
-        // firstClick(cell) //not working yet
-        console.log('im a mine first click');
+    if (gBoard[i][j].cellValue === MINE && gFirstClick) {  //first click - the cell is mine
+        firstClick(cell) 
     } else if (gBoard[i][j].cellValue === MINE) { //clicked a mine    
         clickedMine(cell)
     } else if (gBoard[i][j].cellValue === 0) { //clicked 0
@@ -30,6 +26,7 @@ function cellClicked(cell) {
     }
     var boardSize = gLevel.size ** 2
     if (gGame.shownCount + gGame.markedCount === boardSize) checkWin()
+    gFirstClick = false
 }
 
 function clickedNum(cell, i, j) {
@@ -49,8 +46,6 @@ function clickedMine(cell) {
     gGame.lives--
     var elLives = document.querySelector('.lives')
     elLives.innerHTML = HEART.repeat(gGame.lives)
-
-
 }
 
 function gameOver() {
@@ -89,11 +84,14 @@ function clickedZero(cell) {
 }
 
 function firstClick(cell) {
-    console.log('im here');
-    setMines(gLevel.mines)
-    setNums(gBoard)
-    // var level = document.querySelector('.level2')
-    // level.classList.add('buttonClicked')
+    if (gFirstClick) {
+        gBoard = createBoard(gLevel.size,gLevel.size)
+        setMines(gLevel.mines)
+        setNums(gBoard)
+        var showTable = getCellsValues()
+        console.table(showTable)
+        cellClicked(cell)
+    }
 }
 
 
@@ -125,24 +123,10 @@ function checkWin() {
 }
 
 function gameWon() {
+    bestScore()
+    console.log(localStorage);
     gGame.isOn = false
     var elRestart = document.querySelector('.restart')
     elRestart.innerText = '😎'
 }
 
-function hint() { //supposed to be safe click
-    var cnt = 0
-    while (cnt < 1) {
-        var i = getRandomInt(0, gBoard.length)
-        var j = getRandomInt(0, gBoard[0].length)
-        if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
-            var elCell = document.querySelector(`.cell${i}-${j}`)
-            elCell.style.backgroundColor = ' rgb(255 214 121)'
-            setTimeout(function () {
-                elCell.style.backgroundColor = ' lightgrey';
-            }, 2000);
-            cnt++
-            gHints--
-        }
-    }
-}

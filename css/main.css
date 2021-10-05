@@ -1,17 +1,31 @@
 body {
     text-align: center;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    /* background-image: url("coal mine.png"); */
-    /* background-repeat: no-repeat; */
+    background-image: url("coal mine3.png");
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+h1 {
+    margin-top: 40px;
+    font-size: 60px;
+    font-style: italic;
+}
+
+h2 {
+    margin-bottom: 15px;
+
+    
 }
 
 .level {
     border: none;
-    padding: 5px;
-    margin-top: 5px;
+    padding: 15px;
     margin-bottom: 10px;
     border-radius: 7px;
     cursor: pointer;
+    font-weight: bolder;
+
 }
 
 .buttonClicked {
@@ -26,6 +40,7 @@ button:hover {
     display: inline-block;
     margin-right: 20px;
 }
+
 
 .restart {
     border: none;
@@ -62,6 +77,25 @@ button:hover {
     background-color: rgb(255 214 121);
 }
 
+.safe-click {
+    border: none;
+    border-radius: 7px;
+    display: block;
+    margin: auto;
+    padding: 15px;
+    background-color: rgb(110, 173, 255);
+    height: 50px;
+    width: 140px;
+    margin-bottom: 8px;
+    font-weight: bolder;
+    font-size: medium;
+}
+
+.safe-click:hover {
+    background-color: rgb(82, 145, 228);
+    cursor: pointer;
+}
+
 table {
     margin: auto;
 }
@@ -86,6 +120,7 @@ table {
 .stopwatch {
     font-size: 20px;
     display: block;
+    font-weight: bolder;
 }
 
 .footer {
@@ -129,4 +164,21 @@ table {
 
 .neighbors-8 {
     color: darkblue;
+}
+
+
+.score {
+    margin-top: 30px;
+    padding: 20px;
+    font-size: larger;
+    font-weight: bolder;
+    display: inline-block;
+    background-color: rgba(235, 177, 154, 0.8);
+    border-radius: 10px;
+    width: 400px;
+}
+
+
+.score-levels {
+    margin-top: 10px;
 }

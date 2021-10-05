@@ -13,20 +13,28 @@
 <body onload="init()">
     <h1>Minesweeper</h1>
     <div class="levels">
-        <h3 class='choose-level'>Choose your difficulty level:</h3>
-        <button class="level level1 " onclick="setGameLevel(this, 4,2)">Beginner(4X4) </button>
-        <button class="level level2 buttonClicked" onclick="setGameLevel(this, 8,12)">Medium (8X8)</button>
-        <button class="level level3" onclick="setGameLevel(this, 12,30)">Expert (12X12) </button>
+        <h2 class='choose-level'>Choose your difficulty level:</h2>
+        <button class="level level1 " onclick="setGameLevel(this,1, 4,2)">Beginner(4X4) </button>
+        <button class="level level2 buttonClicked" onclick="setGameLevel(this,2, 8,12)">Medium (8X8)</button>
+        <button class="level level3" onclick="setGameLevel(this,3, 12,30)">Expert (12X12) </button>
     </div>
-    <h2 class="lives">💗💗💗</h2>
+    <h3 class="lives">💗💗💗</h3>
     <button class="restart" onclick="restartGame()">😊</button>
-    <div class = "hints">💡💡💡</div>
+    <div class="hints">💡💡💡</div>
     <button class="hint" onclick="hint()">HINT</button>
+    <button class=" safe-click" onclick="safeClick()"> Safe Click <span class="safeClick-num"> (3) </span> </button>
     <div class="stopwatch">Game time: <span>00:00</span></div>
 
     <table border="1" cellpadding="10">
         <tbody class="game-board"> </tbody>
     </table>
+
+    <div class="score"> Best Score: <br/>  <div class="score-levels"> 
+        Beginner: <span class=" level beginner"></span> &#160 Medium: <span class="level medium"> </span>
+        &#160 Expert: <span class="level expert"></span>
+    </div>
+
+    </div>
     <div class="footer">Noam Zilberman</div>
 
     <script src="js/utils.js"></script>
