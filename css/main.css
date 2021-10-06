@@ -1,8 +1,9 @@
 body {
     text-align: center;
     font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
-    background-image: url("coal mine3.png");
+    background-image: url("background.png");
     background-repeat: no-repeat;
+    background-size: 70%;
     background-position-x: center;
     overflow: scroll;
    
@@ -184,11 +185,11 @@ table {
     font-weight: bolder;
     background-color: rgba(240, 198, 143, 0.8);
     border-radius: 10px;
-    width: 350px;
+    width: 200px;
     display: none;
     position: absolute;
     top: 250px;
-    left: 250px;
+    left: 370px;
 }
 
 .score-levels {
