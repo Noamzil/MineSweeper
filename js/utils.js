@@ -7,6 +7,7 @@ var gMines
 const MINE = '💣'
 const FLAG = '🚩'
 
+
 var gElTimer = document.querySelector('.stopwatch span');
 var gTime = {
     min: 0,

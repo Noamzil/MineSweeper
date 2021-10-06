@@ -11,19 +11,25 @@
 </head>
 
 <body onload="init()">
-    <h1>Minesweeper</h1>
+        <h1>Minesweeper</h1>
     <div class="levels">
         <h2 class='choose-level'>Choose your difficulty level:</h2>
         <button class="level level1 " onclick="setGameLevel(this,1, 4,2)">Beginner(4X4) </button>
         <button class="level level2 buttonClicked" onclick="setGameLevel(this,2, 8,12)">Medium (8X8)</button>
         <button class="level level3" onclick="setGameLevel(this,3, 12,30)">Expert (12X12) </button>
-        <button class="level manual" onclick="customLevel(this)">Custom Size</button>
+    </div>
+    <div>
+        <button class="level  special-buttons manual" onclick="manualMines(this)" >Manual mines <span class="manual-mines"> </span></button>
+        <button class="level special-buttons Custom" onclick="customLevel(this)">Custom Size</button>
+        <button class="level special-buttons seven-boom" onclick="sevenBoom()">7 BOOM!</button>
     </div>
     <h3 class="lives">💗💗💗</h3>
     <button class="restart" onclick="restartGame()">😊</button>
     <div class="hints">💡💡💡</div>
-    <button class="hint" onclick="hint()">HINT</button>
-    <button class=" safe-click" onclick="safeClick()"> Safe Click <span class="safeClick-num"> (3) </span> </button>
+    <div>
+        <button class=" safe-click" onclick="safeClick()"> Safe Click <span class="safeClick-num"> (3) </span> </button>
+        <button class="hint" onclick="hint()">HINT</button>
+    </div>
     
     
     <div class="stopwatch">Game time: <span>00:00</span></div>

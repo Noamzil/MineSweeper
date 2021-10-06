@@ -15,7 +15,10 @@ var gGame = {
     safeClick: 3
 }
 
-var gFirstClick = true
+var gIsFirstClick = true
+var gIsManualMines
+var gIsCustom = false
+var gMinesCount = 0
 
 function init() {
     localStorage.clear()
@@ -49,7 +52,9 @@ function setGameLevel(elBtn, level, size, mines) {
 }
 
 
+
 function customLevel(elBtn) {
+    console.log('gIsCustom:', gIsCustom, 'in the function');
     var size = +prompt('Board size?')
     var mines = +prompt('How many mines?')
     if (mines > size ** 2) {
@@ -57,36 +62,50 @@ function customLevel(elBtn) {
         return
     }
     setGameLevel(elBtn, 'custom', size, mines)
+    gIsCustom = true
 }
 
+
 function restartGame() {
+    stopTimer()
+    resetTimer()
     gGame.markedCount = 0
     gGame.shownCount = 0
     gGame.hints = 3
     gGame.safeClick = 3
     gGame.isOn = true
     gGame.lives = 3
-    gFirstClick = true
+    gIsFirstClick = true
+    gMinesCount = 0
+    gIsCustom = false
+
     var elMinesRem = document.querySelector('.rem-mines')
-    elMinesRem.innerHTML = gLevel.mines
     var elRestart = document.querySelector('.restart')
     var elLives = document.querySelector('.lives')
     var elHints = document.querySelector('.hints')
     var elHint = document.querySelector('.hint')
     var elSafeClick = document.querySelector('.safeClick-num')
+    var elBestScore = document.querySelector('.score')
+    var elManualMines = document.querySelector('.manual-mines')
+    var elLevels = document.querySelectorAll('.level')
+    var elSevenBoom = document.querySelector('.seven-boom')
+
+    elSevenBoom.classList.remove('buttonClicked')
+    elMinesRem.innerHTML = gLevel.mines
     elRestart.innerText = '😊'
     elLives.innerHTML = HEART.repeat(gGame.lives)
     elHints.innerHTML = HINT.repeat(gGame.hints)
     elHint.style.display = 'inline-block'
     elSafeClick.innerHTML = '(' + gGame.safeClick + ')'
-    stopTimer()
-    resetTimer()
     gBoard = createBoard(gLevel.size)
     renderBoard()
     setMines(gLevel.mines)
     setNums(gBoard)
-    var elBestScore = document.querySelector('.score')
     elBestScore.style.display = 'none'
+    elManualMines.innerText = ''
+
+    var showTable = getCellsValues()
+    console.table(showTable)
 
 }
 
@@ -177,3 +196,40 @@ function bestScore() {
         elBestScore3.innerText = localStorage.bestScore3
     }
 }
+
+function manualMines(elBtn) {
+    restartGame()
+    var elLevels = document.querySelectorAll('.level')
+    for (var i = 0; i < elLevels.length; i++) {
+        if (elLevels[i].classList.contains('buttonClicked')) elLevels[i].classList.remove('buttonClicked')
+    }
+    elBtn.classList.add('buttonClicked')
+    var elRestart = document.querySelector('.restart')
+    elRestart.innerText = '👷‍♀️'
+    var elManualMines = document.querySelector('.manual-mines')
+    elManualMines.innerText = '(' + (gLevel.mines - gMinesCount) + ')'
+    gIsManualMines = (gLevel.mines > gMinesCount) ? true : false
+    gBoard = createBoard(gLevel.size)
+    var showTable = getCellsValues()
+    console.table(showTable)
+}
+
+
+function sevenBoom() {
+    var elSevenBoom = document.querySelector('.seven-boom')
+    elSevenBoom.classList.add('buttonClicked')
+    gBoard = createBoard(gLevel.size)
+    renderBoard()
+    for (var i=0; i<gBoard.length;i++) {
+        for (var j=0; j<gBoard[0].length;j++){
+            if ((i+j)%7===0) {
+                gBoard[i][j].cellValue = MINE
+            }
+        }
+    }
+    setNums(gBoard)
+    var showTable = getCellsValues()
+    console.table(showTable)
+}
+
+
